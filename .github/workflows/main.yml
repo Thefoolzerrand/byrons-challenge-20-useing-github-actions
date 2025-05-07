@@ -1,0 +1,43 @@
+name: Test workflow
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - staging
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-24.04
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 21.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 21.x
+
+      - name: 🧰 Install dependencies
+        run: npm install
+
+      - name: 🏗️ Build the app
+        run: npm run build
+
+      - name: 🚀 Start server
+        run: npm start &
+      
+      - name: ⏳ Wait for server
+        run: sleep 20  # Or use wait-on if you can
+
+      - name: ✅ Run component tests
+        run: npm run test-component
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run build
+          start: npm start
