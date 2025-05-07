@@ -15,6 +15,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
 
       - name: Use Node.js 21.x
         uses: actions/setup-node@v3
@@ -36,8 +39,5 @@ jobs:
       - name: ✅ Run component tests
         run: npm run test-component
 
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          build: npm run build
-          start: npm start
+      
+      
